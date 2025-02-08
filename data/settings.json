@@ -1,0 +1,36 @@
+{
+    "rpc": "https://solana-mainnet.api.syndica.io/api-key/3rJbPbbodmK4bWZVoMC4HcTkfDU953nznrevwhk4TWWiz2pcQBqqAwbzbSS2Hj9bQG1rT1S5sboJnFRQKuQ471AZiTf21Rn28jQ",
+    "master_dev_wallet_pk": "4d6tHjc47iYQdsah7zbWKEfbCVfqWdsWyMN91LPGXg12BnrUSrGs4V65iJdQJ5FXYfsAzZ2rGRJ59nFxSFNMstX9",
+    "master_funding_wallet_pk": "4d6tHjc47iYQdsah7zbWKEfbCVfqWdsWyMN91LPGXg12BnrUSrGs4V65iJdQJ5FXYfsAzZ2rGRJ59nFxSFNMstX9",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    "dev_wallet_sol_buy": 0.001,
+    "wallets_sol_buy": 0.04,
+    "token_name": "No Pain",
+    "token_symbol": "NP",
+    "token_desc": "SAD MONEY GANG is a decentralized cryptocurrency that is making a lot of fun to watch while going to the moon. Buy it now!",
+    "twitter": "",
+    "telegram": "",
+    "website": ""
+}
