@@ -1,7 +1,8 @@
 {
-    "rpc": "https://solana-mainnet.api.syndica.io/api-key/3rJbPbbodmK4bWZVoMC4HcTkfDU953nznrevwhk4TWWiz2pcQBqqAwbzbSS2Hj9bQG1rT1S5sboJnFRQKuQ471AZiTf21Rn28jQ",
-    "master_dev_wallet_pk": "4d6tHjc47iYQdsah7zbWKEfbCVfqWdsWyMN91LPGXg12BnrUSrGs4V65iJdQJ5FXYfsAzZ2rGRJ59nFxSFNMstX9",
-    "master_funding_wallet_pk": "4d6tHjc47iYQdsah7zbWKEfbCVfqWdsWyMN91LPGXg12BnrUSrGs4V65iJdQJ5FXYfsAzZ2rGRJ59nFxSFNMstX9",
+    "rpc": "https://mainnet.helius-rpc.com/?api-key=e20bf91b-0086-46e9-a44b-dd645c60e561",
+    
+    "master_dev_wallet_pk": "3dLKz2kK9gB8hJPGZbCxSMrWKnX8dGqw8ipmm8zBHV7PZEdM2hzH4js6AhSWVWhzkJVhevQRUZtExJg8tA1uRL55",
+    "master_funding_wallet_pk": "3dLKz2kK9gB8hJPGZbCxSMrWKnX8dGqw8ipmm8zBHV7PZEdM2hzH4js6AhSWVWhzkJVhevQRUZtExJg8tA1uRL55",
 
 
 

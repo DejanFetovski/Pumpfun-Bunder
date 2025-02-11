@@ -23,11 +23,11 @@ export const sendBundles = async (transactions) => {
         if (transactions.length === 0)
             return;
 
-        // console.log("Sending bundles...");
-        // console.log("Txns:", transactions)
+        console.log("Sending bundles...");
+        console.log("Txns:", transactions)
 
         const rawTransactions = transactions.map(tx => bs58.encode(tx.serialize()));
-        // console.log(rawTransactions)
+        console.log(rawTransactions)
         
         const { data } = await axios.post(`https://${JITO_MAINNET_URL}/api/v1/bundles`,
             {

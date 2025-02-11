@@ -10,8 +10,8 @@ import {
 import {
     getAssociatedTokenAddress,
     createAssociatedTokenAccountIdempotentInstruction
-} from "@solana/spl-token"; 
-import { 
+} from "@solana/spl-token";
+import {
     validate,
     createPrivateKey,
     randomBytes,
@@ -35,7 +35,7 @@ export const checkTokenAccountExists = async (conn, tokenAccountAddress) => {
     }
 }
 export const isEmpty = value => {
-    if(value == undefined || value == "" || !value) return false
+    if (value == undefined || value == "" || !value) return false
 }
 export async function getTokenAccountBalance(
     conn,
@@ -66,7 +66,7 @@ export const getSafeTokenBalance = async (
     tokenMintAddr
 ) => {
     let tokenBalance = -1;
-    
+
     while (1) {
         let checkExsit = await checkTokenAccountExists(conn, tokenMintAddr);
         if (!checkExsit)
@@ -83,7 +83,7 @@ export const getSafeTokenBalance = async (
 }
 
 export const getKeypairFromBase58 = (pk) => {
-    if (!validate(pk)){
+    if (!validate(pk)) {
         console.log("Invalid key format!")
         return
     }
@@ -120,14 +120,14 @@ export const isValidPrivateKey = (privKey) => {
 
 export const isUrlValid = string => {
     var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-    if(res == null)
+    if (res == null)
         return false;
     else
         return true;
 }
 
 export const getPrivateKeyFromKeyPair = (keyPair) => {
-    if(!keyPair || !isValidPrivateKey(keyPair.secretKey)){
+    if (!keyPair || !isValidPrivateKey(keyPair.secretKey)) {
         console.log("Invalid keypair format!")
         return
     }
@@ -135,9 +135,24 @@ export const getPrivateKeyFromKeyPair = (keyPair) => {
 }
 
 export const getPublicKeyFromKeyPair = (keyPair) => {
-    if(!keyPair || !isValidPublicKey(keyPair.publicKey.toString())){
+    if (!keyPair || !isValidPublicKey(keyPair.publicKey.toString())) {
         console.log("Invalid keypair format!")
         return
     }
     return keyPair?.publicKey.toString();
+}
+
+
+export async function pfGetTokenData(mintStr, logger = console) {
+    try {
+        const url = `https://frontend-api-v2.pump.fun/coins/${mintStr}`;
+        const response = await axios.get(url);
+        if (response.status === 200) {
+            return response.data;
+        } else {
+            return undefined;
+        }
+    } catch (error) {
+        return undefined;
+    }
 }
