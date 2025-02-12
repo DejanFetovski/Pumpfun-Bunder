@@ -3,7 +3,8 @@ import {
     Keypair,
     Connection,
     VersionedTransaction,
-    TransactionMessage
+    TransactionMessage,
+    LAMPORTS_PER_SOL
 } from "@solana/web3.js";
 import bs58 from "bs58";
 import fs from "fs";
@@ -22,10 +23,11 @@ export async function show_balance() {
         Keypair.fromSecretKey(bs58.decode(keypair.secretKey[0]))
     );
 
+    console.log("Generated Wallet Count = ", wallets.length)
     let msg = "";
     for (let i = 0; i < wallets.length; i++) {
         const balance = await connection.getBalance(wallets[i].publicKey);
-        msg += chalk.yellowBright(`Wallet #${i} has ${balance} SOL\n`)
+        msg += chalk.yellowBright(`Wallet #${i} has ${balance / LAMPORTS_PER_SOL} SOL\n`)
     }
 
     console.log(msg)

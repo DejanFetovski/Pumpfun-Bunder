@@ -9,7 +9,7 @@ const trade = new Trade();
 export async function sell_all() {
   // AWAIT USER OPTION REPLIES
   const mint = await input({
-    message: "paste token contract address to sell:",
+    message: "token address to sell:",
     validate: (data) => {
       return true;
     },

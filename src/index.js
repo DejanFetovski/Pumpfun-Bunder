@@ -31,7 +31,7 @@ export async function main() {
   });
   console.log(chalk.cyanBright.bold(fig_text));
   // LOG COPYRIGHT
-  console.log(chalk.magentaBright("Developed by: wwww.crypto-bots.io"));
+  // console.log(chalk.magentaBright("Developed by: wwww.crypto-bots.io"));
 
   // PRINT OPTION MENUs
   var table = new Table({

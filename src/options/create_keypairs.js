@@ -8,14 +8,14 @@ import { main } from "../index.js";
 
 export async function keypairs() {
   const answer = await number({
-    message: "how many wallet keypairs to generate (20 max):",
+    message: "how many wallets to generate (20 max):",
     validate: (data) => {
       if (data > 20) {
         return "Maximum keypairs allowed is 20";
       }
 
-      if (data < 2) {
-        return "Minimum keypairs allowed is 2";
+      if (data < 1) {
+        return "Minimum keypairs allowed is 1";
       }
 
       return true;

@@ -43,8 +43,8 @@ export async function getTokenAccountBalance(
     mintAddress) {
     try {
         const tokenAccounts = await conn.getParsedTokenAccountsByOwner(
-            walletAddress,
-            { mint: mintAddress }
+            new PublicKey(walletAddress),
+            { mint: new PublicKey(mintAddress) }
         );
 
         if (!tokenAccounts)

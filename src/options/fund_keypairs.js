@@ -21,7 +21,7 @@ export async function fund_keypairs(
 
     // Verwenden wir "input" statt "number"
     const solAnswer = await input({
-      message: "How much SOL should each Keypair receive?",
+      message: "How much SOL transfer to each wallet?",
       validate: (val) => {
         const parsed = parseFloat(val);
         if (isNaN(parsed) || parsed <= 0) {
@@ -45,7 +45,7 @@ export async function fund_keypairs(
         SystemProgram.transfer({
           fromPubkey: fundingKeypair.publicKey,
           toPubkey: pubKeyString,
-          lamports: lamportsToSend,
+          lamports: Math.floor(lamportsToSend),
         })
       );
 
