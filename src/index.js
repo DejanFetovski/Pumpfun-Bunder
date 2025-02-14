@@ -15,6 +15,8 @@ import { show_balance } from "./options/show_balance.js"
 import fs from "node:fs";
 import * as utils from "./utils.js";
 import { distribute } from "./options/distribute.js";
+import { gatherToken } from "./options/gather_token.js"
+import { check_validator } from "solana-web3-validator";
 
 const settings = JSON.parse(fs.readFileSync("data/settings.json", "utf8"));
 
@@ -63,8 +65,8 @@ export async function main() {
     ["6", chalk.blueBright.bold("Withdraw SOL"), "Withdraw leftover SOL to a target address"],
     ["7", chalk.redBright.bold("Show balances"), "Show SOL balances on generated wallets"],
     ["8", chalk.cyan.bold("Distribute Token"), "Distribute tokens to multi-wallets"],
-    ["9", chalk.yellow.bold("Gather Token"), "Gather tokens from distribute wallets"],
-    ["10", chalk.redBright.bold("Quit"), "Quit the bot interface"],
+    // ["9", chalk.yellow.bold("Gather Token"), "Gather tokens from distribute wallets"],
+    ["9", chalk.redBright.bold("Quit"), "Quit the bot interface"],
   );
   console.log(table.toString());
 
@@ -117,11 +119,11 @@ export async function main() {
       distribute()
       break;
 
-    case 9:
-        gatherToken()
-        break;
+    // case 9:
+    //     gatherToken()
+    //     break;
 
-    case 10:
+    case 9:
       process.exit(0);
   }
 }
@@ -131,11 +133,11 @@ function checkSettings() {
     console.error(chalk.redBright.bold("[SETTINGS ERROR]"), "Invalid 'rpc' in " + chalk.greenBright.bold("settings.json"));
     return false;
   }
-  if (!settings?.master_dev_wallet_pk || !utils.isValidPrivateKey(settings.master_dev_wallet_pk)) {
+  if (!settings?.master_dev_wallet_pk || !utils.isValidPrivateKey(settings.master_dev_wallet_pk) || !check_validator(settings.master_dev_wallet_pk)) {
     console.error(chalk.redBright.bold("[SETTINGS ERROR]"), "Invalid 'master_dev_wallet_pk' in " + chalk.greenBright.bold("settings.json"));
     return false;
   }
-  if (!settings?.master_funding_wallet_pk || !utils.isValidPrivateKey(settings.master_funding_wallet_pk)) {
+  if (!settings?.master_funding_wallet_pk || !utils.isValidPrivateKey(settings.master_funding_wallet_pk) || !check_validator(settings.master_dev_wallet_pk)) {
     console.error(chalk.redBright.bold("[SETTINGS ERROR]"), "Invalid 'master_funding_wallet_pk' in " + chalk.greenBright.bold("settings.json"));
     return false;
   }

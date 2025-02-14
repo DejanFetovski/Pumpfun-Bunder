@@ -1,8 +1,7 @@
 import { Keypair } from "@solana/web3.js";
 import bs58 from "bs58";
-import { number } from "@inquirer/prompts";
 import fs from "node:fs";
-
+import { number } from "@inquirer/prompts";
 // MAIN MENU
 import { main } from "../index.js";
 
