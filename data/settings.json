@@ -1,37 +1,15 @@
 {
     "rpc": "https://solana-mainnet.api.syndica.io/api-key/3rJbPbbodmK4bWZVoMC4HcTkfDU953nznrevwhk4TWWiz2pcQBqqAwbzbSS2Hj9bQG1rT1S5sboJnFRQKuQ471AZiTf21Rn28jQ",
     
-    "master_dev_wallet_pk": "2mDrytdBhsVFygmuyn99KR3h5dLmfCMZR7GutFnTxn8V5u46ZnKRGSBxG3Pq8ttbYDR98AENwCX22G8woLMdq8Gp",
-    "master_funding_wallet_pk": "2mDrytdBhsVFygmuyn99KR3h5dLmfCMZR7GutFnTxn8V5u46ZnKRGSBxG3Pq8ttbYDR98AENwCX22G8woLMdq8Gp",
+    "master_dev_wallet_pk": "4qUiYJkUR5cTvfcQgpMzo4hqT396fRVf7qoHcoGUcasfnbMPXRhBrT4gBmKmjbYH6DzSFj21g8ihDwSoix968PeZ",
+    "master_funding_wallet_pk": "4qUiYJkUR5cTvfcQgpMzo4hqT396fRVf7qoHcoGUcasfnbMPXRhBrT4gBmKmjbYH6DzSFj21g8ihDwSoix968PeZ",    
+    "dev_wallet_sol_buy": 0.0001, 
+    "wallets_sol_buy": 0.001,  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    "dev_wallet_sol_buy": 0.001,
-    "wallets_sol_buy": 0.005 ,
-    "token_name": "No Pain",
-    "token_symbol": "NP",
+    "token_name": "SuperHero",
+    "token_symbol": "DASH", 
     "token_desc": "SAD MONEY GANG is a decentralized cryptocurrency that is making a lot of fun to watch while going to the moon. Buy it now!",
-    "twitter": "",
+    "twitter": "", 
     "telegram": "",
-    "website": ""
+    "website": "https://dash.com"  
 }

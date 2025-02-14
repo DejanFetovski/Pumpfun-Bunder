@@ -60,10 +60,11 @@ export async function main() {
       "Sell desired percentage of supply across all wallets",
     ],
     ["5", chalk.magentaBright.bold("Dispose SOL"), "Send SOL from Funding Wallet"],
-    ["6", chalk.gray.bold("Withdraw SOL"), "Withdraw leftover SOL to a target address"],
-    ["7", chalk.gray.bold("Show balances"), "Show SOL balances on generated wallets"],
-    ["8", chalk.gray.bold("Distribute Token"), "Distribute tokens to multi-wallets"],
-    ["9", chalk.redBright.bold("Quit"), "Quit the bot interface"],
+    ["6", chalk.blueBright.bold("Withdraw SOL"), "Withdraw leftover SOL to a target address"],
+    ["7", chalk.redBright.bold("Show balances"), "Show SOL balances on generated wallets"],
+    ["8", chalk.cyan.bold("Distribute Token"), "Distribute tokens to multi-wallets"],
+    ["9", chalk.yellow.bold("Gather Token"), "Gather tokens from distribute wallets"],
+    ["10", chalk.redBright.bold("Quit"), "Quit the bot interface"],
   );
   console.log(table.toString());
 
@@ -71,7 +72,7 @@ export async function main() {
   const option = await number({
     message: "reply with option:",
     validate: (data) => {
-      if (data < 1 || data > 8) {
+      if (data < 1 || data > 10) {
         return "Provided option invalid, choose from the menu number available";
       }
 
@@ -117,8 +118,11 @@ export async function main() {
       break;
 
     case 9:
+        gatherToken()
+        break;
+
+    case 10:
       process.exit(0);
-      break;
   }
 }
 

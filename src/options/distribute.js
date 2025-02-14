@@ -10,7 +10,9 @@ import bs58 from "bs58";
 import fs from "fs";
 import chalk from "chalk";
 import * as jito from "../jitoAPI.js"
+const UNIT_INSTRUCTION_CNT = 4
 
+const distributeKeypairs = JSON.parse(fs.readFileSync("data/distributeKeypairs.json", "utf8"));
 const keypairs = JSON.parse(fs.readFileSync("data/keypairs.json", "utf8"));
 const settings = JSON.parse(fs.readFileSync("data/settings.json", "utf8"));
 const PAYER = Keypair.fromSecretKey(bs58.decode(settings.master_dev_wallet_pk));
@@ -26,7 +28,7 @@ import { connect } from "http2";
 import { createTransferTokenInst } from "./solana.js";
 
 export async function distribute() {
-    const walletCount = await number({
+    const distributeWalletCount = await number({
         message: "how many wallets to distribute (90 max):",
         validate: (data) => {
             if (data > 80) {
@@ -53,16 +55,17 @@ export async function distribute() {
 
     // Create keypairs and save
     const distributeKeypairsToJson = [];
-    let distributeKeypairs = [];
+    let distributeWallets = [];
 
-    for (let i = 0; i < walletCount; i++) {
+    for (let i = 0; i < distributeWalletCount; i++) {
         const keypair = Keypair.generate();
-        distributeKeypairs.push(keypair)
+        distributeWallets.push(keypair)
         distributeKeypairsToJson.push({
             publicKey: keypair.publicKey.toBase58(),
             secretKey: [bs58.encode(keypair.secretKey)],
         });
     }
+    console.log("Generated Wallet: ", distributeKeypairsToJson)
 
     // WRITE TO JSON FILE (wait for a second)
     setTimeout(() => {
@@ -79,42 +82,74 @@ export async function distribute() {
         });
     }, 1000);
 
+    //Distribute wallets - test
+    // const distributeWallets = distributeKeypairs.map((keypair) =>
+    //     Keypair.fromSecretKey(bs58.decode(keypair.secretKey[0]))
+    // );
+
     // Sniper Wallet
     const wallets = keypairs.map((keypair) =>
         Keypair.fromSecretKey(bs58.decode(keypair.secretKey[0]))
     );
 
-    // Distribute Wallet
-    
-
-    
-    let distributeWallets = [];
-    for(let i = 0; i < distributeKeypairs.length; i++){
-        console.log(distributeKeypairs[i].secretKey, bs58.encode(distributeKeypairs[i].secretKey));
-        distributeWallets.push(Keypair.fromSecretKey(bs58.decode(distributeKeypairs[i].secretKey)))
-    }
-
-    console.log(distributeWallets)
-    return;
-    
-
     // Create Token account
-    // do {
-    //     await doCreateTokenAccount(distributeKeypairs, mint)
-    //     distributeKeypairs.splice(0, 59);
-    // } while (distributeKeypairs.length > 0);
+    console.log(">>>>>>>>>>> Creating Token Account....")
+    do {
+        await doCreateTokenAccount(distributeWallets, mint)
+        distributeWallets.splice(0, 59);
+    } while (distributeWallets.length > 0);
+    console.log(">>>>>>>> Ending Token Account....")
 
-
+    distributeWallets = distributeKeypairsToJson.map((KeypairsToJson) =>
+        Keypair.fromSecretKey(bs58.decode(KeypairsToJson.secretKey[0]))
+    );
 
     // Token Transfer
-    // const distributeKeypairs = settings;
-    // const getNextChunk = getChunks(distributeKeypairs, 4);
-
+    let bundleTxns = []
     for (let i = 0; i < wallets.length; i++) {
         const sender = wallets[i];
-        // const toAddrs = getNextChunk()
-        // console.log("getNextChunk()", distributeKeypairs[1].)
-        await distributeToken(sender, [distributeWallets[0], distributeWallets[1]], mint)
+        let vt = []
+        if (distributeWallets.length >= UNIT_INSTRUCTION_CNT * i + UNIT_INSTRUCTION_CNT) {
+            vt = await distributeToken(sender, [distributeWallets[UNIT_INSTRUCTION_CNT * i], distributeWallets[UNIT_INSTRUCTION_CNT * i + 1], distributeWallets[UNIT_INSTRUCTION_CNT * i + 2], distributeWallets[UNIT_INSTRUCTION_CNT * i + 3]], mint)
+            bundleTxns.push(vt)
+        } else if (distributeWallets.length < UNIT_INSTRUCTION_CNT * i + UNIT_INSTRUCTION_CNT) {
+            let j = distributeWallets.length - UNIT_INSTRUCTION_CNT * i;
+            let toAddrs = [];
+            for (let i = 0; i < j; i++) {
+                toAddrs.push(distributeWallets[UNIT_INSTRUCTION_CNT * i + i])
+            }
+
+            vt = await distributeToken(sender, toAddrs, mint)
+            bundleTxns.push(vt)
+        }
+
+        if (i % 4 == 3 || i == wallets.length - 1) {
+            // Tip 
+            let instructions = []
+            instructions.push(await jito.getJitoTipInstruction(PAYER));
+            const jitoTipVt = new VersionedTransaction(
+                new TransactionMessage({
+                    payerKey: PAYER.publicKey,
+                    recentBlockhash: (await connection.getLatestBlockhash()).blockhash,
+                    instructions: instructions,
+                }).compileToV0Message()
+            )
+            jitoTipVt.sign([PAYER]);
+
+            bundleTxns.push(jitoTipVt)
+
+
+            // Run Bundle
+            let ret = await jito.sendBundles(bundleTxns)
+            console.log("Bundle Transaction result: ", ret)
+
+            setTimeout(async () => {
+                console.log("Delay between bundle transaction...")
+            }, 500);
+
+            // clear 
+            bundleTxns = [];
+        }
     }
 
     // RETURN TO MAIN MENU (HOME) (wait for 2 seconds)
@@ -231,29 +266,28 @@ async function distributeToken(sender, toWallets, mintAddress) {
         return
     }
 
-    console.log(`Tokebalance of ${sender.publicKey} : ${balance / 10000000000}`)
-    const distributeTokenAmount = divideAmount(balance, 2)
-
-    console.log(distributeTokenAmount)
+    console.log(`Token balance of ${sender.publicKey} : ${balance}`)
+    const distributeTokenAmount = divideAmount(balance, toWallets.length + 1)
 
     let instructions = []
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < toWallets.length; i++) {
         console.log("toWallets[i].PublicKey = ", toWallets[i].publicKey.toBase58())
         instructions.push(await createTransferTokenInst(connection, sender, toWallets[i], mintAddress, Math.floor(distributeTokenAmount[i])))
     }
 
     const versionedTransaction = new VersionedTransaction(
         new TransactionMessage({
-            payerKey: sender.publicKey,
+            payerKey: PAYER.publicKey,
             recentBlockhash: (await connection.getLatestBlockhash()).blockhash,
             instructions: instructions,
         }).compileToV0Message()
     )
 
-    versionedTransaction.sign([sender]);
+    console.log(await connection.simulateTransaction(versionedTransaction))
+    versionedTransaction.sign([PAYER, sender]);
 
-    console.log(await connection.simulateTransaction(versionedTransaction));
+    return versionedTransaction;
 }
 
 function getChunks(arr, size) {

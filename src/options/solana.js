@@ -9,27 +9,34 @@ import {
     TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 
+import {
+    PublicKey,
+} from "@solana/web3.js";
+
 export const createTransferTokenInst = async (connection, sender, toAddr, tokenMint, amount) => {
     const from = await getOrCreateAssociatedTokenAccount(
         connection,
         sender,
-        tokenMint,
+        new PublicKey(tokenMint),
         sender.publicKey
     );
 
     const to = await getOrCreateAssociatedTokenAccount(
         connection,
-        sender,
-        tokenMint,
-        toAddr
+        toAddr,
+        new PublicKey(tokenMint),
+        toAddr.publicKey
     );
 
+    console.log("Buy Token Amount :", amount * 1000000)
     return createTransferInstruction(
         from.address,
         to.address,
         sender.publicKey,
-        Math.floor(amount * LAMPORTS_PER_MEME)
+        Math.floor(amount * 1000000)
     );
+    
+
 };
 
 export async function getTokenAccountBalance(
