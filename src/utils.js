@@ -16,7 +16,9 @@ import {
     createPrivateKey,
     randomBytes,
 } from "node-crypto-provider";
+
 import bs58 from 'bs58';
+import { check_validator } from "solana-web3-validator";
 
 export const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -83,7 +85,7 @@ export const getSafeTokenBalance = async (
 }
 
 export const getKeypairFromBase58 = (pk) => {
-    if (!validate(pk)) {
+    if (!check_validator(pk)) {
         console.log("Invalid key format!")
         return
     }
@@ -106,7 +108,8 @@ const isValidPublicKey = (pubkey) => {
 
 export const isValidPrivateKey = (privKey) => {
     try {
-        if (!validate(privKey)) {
+
+        if (!check_validator(privKey)) {
             console.log("Invalid Key format!", error)
             return false
         }

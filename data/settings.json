@@ -1,8 +1,8 @@
 {
     "rpc": "https://solana-mainnet.api.syndica.io/api-key/3rJbPbbodmK4bWZVoMC4HcTkfDU953nznrevwhk4TWWiz2pcQBqqAwbzbSS2Hj9bQG1rT1S5sboJnFRQKuQ471AZiTf21Rn28jQ",
     
-    "master_dev_wallet_pk": "4qUiYJkUR5cTvfcQgpMzo4hqT396fRVf7qoHcoGUcasfnbMPXRhBrT4gBmKmjbYH6DzSFj21g8ihDwSoix968PeZ",
-    "master_funding_wallet_pk": "4qUiYJkUR5cTvfcQgpMzo4hqT396fRVf7qoHcoGUcasfnbMPXRhBrT4gBmKmjbYH6DzSFj21g8ihDwSoix968PeZ",    
+    "master_dev_wallet_pk": "4LUc5M8AEVpXtXtVnDi3KwBcwLZhgxg5BgYuLpuC11SgfzjJ5LLBSCy2QnVV1wwBnUoyHJfjomCR7ak29j6zhcn",
+    "master_funding_wallet_pk": "3YNHAiM2bGuwR4yDxBju8jMvZ9Dyi3GCAWvBeiUKR8rdhnz8mgb6gXLfoCX4DX8NjNKntvUydPeehHFsPGSDucMm",    
     "dev_wallet_sol_buy": 0.0001, 
     "wallets_sol_buy": 0.001,  
 
